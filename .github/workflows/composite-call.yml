@@ -1,0 +1,11 @@
+name: Test
+
+on:
+  - workflow_call
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Test
+        uses: itv-test/tf-gcp-module-template/composite-actions/test-action@v1.20.0

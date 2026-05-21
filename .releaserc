@@ -1,0 +1,66 @@
+{
+  "branches": ["main"],
+  "options": {
+    "debug": true
+  },
+  "plugins": [
+    [
+      "semantic-release-replace-plugin",
+      {
+        "replacements": [
+          {
+            "files": [".github/workflows/*.yml", "composite-actions/**/action.yaml"],
+            "from": "(?<=itv-test\/tf-gcp-module-template.*)@(main$|v\\d+\\.\\d+\\.\\d+$)",
+            "to": "@${nextRelease.gitTag}"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "angular",
+        "releaseRules": [
+          { "type": "chore", "scope": "deps", "release": "patch" },
+          { "type": "fix", "release": "patch" },
+          { "type": "feat", "release": "minor" },
+          { "type": "critical", "release": "major" },
+          { "scope": "no-release", "release": false },
+          { "type": "docs", "release": false },
+          { "type": "ci", "release": false },
+          { "type": "^(?!chore$|fix$|feat$|critical$).*$", "release": false }
+        ],
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        },
+        "writerOpts": {
+          "commitPartial": "#### {{header}}\n{{#if body}}\n{{body}}\n{{/if}}\n{{#if footer}}\n\n  {{footer}}\n{{/if}}"
+        },
+        "presetConfig": {
+          "types": [
+            {"type": "feat", "section": "Features", "hidden": false},
+            {"type": "fix", "section": "Bug Fixes", "hidden": false},
+            {"type": "critical", "section": "Breaking", "hidden": false},
+            { "type": "chore", "scope": "deps", "section": "Dependency Upgrade", "hidden": false }
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [".github/workflows/*.yml", "composite-actions/**/action.yaml"]
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}

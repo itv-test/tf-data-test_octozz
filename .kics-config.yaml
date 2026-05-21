@@ -1,0 +1,8 @@
+---
+path: .
+type:
+  - Terraform
+output-path: "/tmp"
+fail-on:
+  - high
+  - medium

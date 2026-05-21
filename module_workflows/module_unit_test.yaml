@@ -1,0 +1,28 @@
+name: Test modules
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  id-token: write
+  contents: read
+
+run-name: "Testing GCP terraform. Started by: ${{ github.actor }}"
+
+jobs:
+  test_modules:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Test module
+        id: test-module
+        uses: ITV/itv-data-actions/composite-actions/module-test@main
+        with:
+          working-directory: "."
+          internal_repo_ro_pat: ${{ secrets.INTERNAL_REPO_RO_PAT }}
+          service-account: 'github-actions@electric-cortex-435312-j1.iam.gserviceaccount.com'
+          workload-identity-provider: 'projects/348570111620/locations/global/workloadIdentityPools/github-actions/providers/github-actions'

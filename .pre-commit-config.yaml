@@ -1,0 +1,45 @@
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.2 # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+    hooks:
+      - id: terraform_fmt
+      # - id: terraform_checkov (Enable later on)
+      - id: terraform_tflint
+        args:
+          - --args=--disable-rule=terraform_required_providers --disable-rule=terraform_required_version --disable-rule=terraform_module_pinned_source
+      - id: terraform_docs
+        args:
+          - --args=--hide=requirements
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0 # Get the latest from: https://github.com/pre-commit/pre-commit-hooks/releases
+    hooks:
+      - id: check-case-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: check-yaml
+      - id: detect-private-key
+  # - repo: https://github.com/bridgecrewio/yor
+  #   rev: 0.1.199
+  #   hooks:
+  #     - id: yor
+  #       name: yor
+  #       entry: yor tag -d
+  #       args: ["terraform", "--tags", "yor_trace"]
+  #       language: golang
+  #       types: [terraform]
+  #       pass_filenames: false
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.1
+    hooks:
+      - id: gitleaks
+  # - repo: git@github.com:ITV/data-mesh-commit-hooks.git
+  #   rev: v0.1.1
+  #   hooks:
+  #       - id: standard-commit-msg
+  #         name: Standard Commit Msg
+  #         stages: [commit-msg]
+  #       - id: kics-scan
+  #         name: Checkmarx KICS Scan

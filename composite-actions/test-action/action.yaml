@@ -1,0 +1,11 @@
+name: "test-action"
+description: "test test test"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate operation
+      id: validate
+      shell: bash
+      run: |
+        echo "Test successful!!!"

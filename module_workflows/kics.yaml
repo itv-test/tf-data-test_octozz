@@ -1,0 +1,22 @@
+name: KICS Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  kics:
+    uses: ITV/symphony-actions/.github/workflows/kics.yaml@main
+    secrets:
+      internal_repo_ro_pat: ${{ secrets.INTERNAL_REPO_RO_PAT }}
+    with:
+      path_to_terraform: "."

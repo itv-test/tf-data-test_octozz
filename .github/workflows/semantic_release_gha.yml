@@ -1,0 +1,74 @@
+# name: GHA Release
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# permissions:
+#   id-token: write # to enable use of OIDC for npm provenance
+
+# jobs:
+#     release:
+#         runs-on: ubuntu-24.04
+#         steps:
+#           - name: Get GitHub token via Octo STS
+#             id: octo-sts
+#             uses: itv-test/test-actions/octo-sts@main
+#             with:
+#               identity: semantic-release-gha
+
+          # - name: Checkout
+          #   uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+          #   with:
+          #     token: ${{ steps.octo-sts.outputs.token }}
+
+          # - name: Install dependencies
+          #   run: npm install semantic-release-slack-bot conventional-changelog-conventionalcommits -D
+
+          # - name: Semantic Release
+          #   uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
+          #   id: release
+          #   with:
+          #     dry_run: false
+          #     extra_plugins: |
+          #         @semantic-release/changelog@6.0.3
+          #         @semantic-release/git
+          #         semantic-release-replace-plugin@1.2.7
+          #   env:
+          #     GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
+          #     SEMANTIC_RELEASE_PACKAGE: ${{ github.event.repository.name }}
+
+          # - name: tag major and minor versions
+          #   if: ${{ steps.release.outputs.new_release_published == 'true' }}
+          #   env:
+          #     GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
+          #   run: |
+          #     MAJOR=v${{ steps.release.outputs.new_release_major_version }}
+          #     MINOR=v${{ steps.release.outputs.new_release_major_version }}.${{ steps.release.outputs.new_release_minor_version }}
+          #     REPO=${{ github.repository }}
+          #     REF=${{ github.ref_name }}
+
+          #     # get_ref_sha: resolve HEAD commit SHA from the branch ref
+          #     HEAD_SHA=$(gh api "/repos/$REPO/git/ref/heads/$REF" --jq '.object.sha')
+
+          #     # get_commit_tree_sha: get the tree SHA from that commit
+          #     TREE_SHA=$(gh api "/repos/$REPO/git/commits/$HEAD_SHA" --jq '.tree.sha')
+
+          #     # create_commit: create a signed commit via the API (same tree = no file changes)
+          #     COMMIT_SHA=$(jq -rn \
+          #       --arg msg "chore: update $MAJOR and $MINOR version tags" \
+          #       --arg tree "$TREE_SHA" \
+          #       --arg parent "$HEAD_SHA" \
+          #       '{"message":$msg,"tree":$tree,"parents":[$parent]}' | \
+          #       gh api --method POST "/repos/$REPO/git/commits" --input - --jq '.sha')
+
+          #     # update_ref: force-update each tag ref (PATCH if exists, POST to create)
+          #     for TAG in "$MAJOR" "$MINOR"; do
+          #       gh api --method PATCH "/repos/$REPO/git/refs/tags/$TAG" \
+          #         --field sha="$COMMIT_SHA" \
+          #         --field force=true 2>/dev/null || \
+          #       gh api --method POST "/repos/$REPO/git/refs" \
+          #         --field ref="refs/tags/$TAG" \
+          #         --field sha="$COMMIT_SHA"
+          #     done
