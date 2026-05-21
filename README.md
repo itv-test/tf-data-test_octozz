@@ -1,9 +1,31 @@
-# tf-data-module-template
-Template for creating terraform modules used in Central Data.
+# tf-data-test_octozz
 
-## How to use
+Terraform module for test_octozz used in Central Data.
 
-1. Go to [Create & Configure Repo](https://github.com/itv-test/tf-gcp-module-template/actions/workflows/create-repo.yml) action.
-2. Click `Run workflow` and populate the input form with a name and description for a new module.
-3. Run the workflow. This will create new repository and configure its settings and permissions to security standard.
-4. The name of the new repository will be `tf-data-<name>` where `name` is the name supplied in the input form. Also, the link to the new repository will appear in the workflow's summary.
+## Description
+test
+
+## Repository Settings
+This repository's settings, including permissions and branch protections, are managed by Safe Settings app. See [documentation](https://itvplc.jira.com/wiki/spaces/Symphony/pages/5518622731/Safe-Settings+-+GitHub+settings+as+code).
+
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+No providers.
+
+## Modules
+
+No modules.
+
+## Resources
+
+No resources.
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+<!-- END_TF_DOCS -->
